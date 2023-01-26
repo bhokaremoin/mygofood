@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Badge } from "react-bootstrap";
 import Modal from "../Modal";
 import Cart from "../screens/Cart";
+import { useCart } from "./ContextReducer";
 const Navbar = () => {
   const [cartView, setCartView] = useState(false);
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const Navbar = () => {
     localStorage.removeItem("authToken");
     navigate("/login");
   };
+  const data = useCart();
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-success">
@@ -44,7 +46,7 @@ const Navbar = () => {
                   <Link
                     className="nav-link fs-5 active"
                     aria-current="page"
-                    to="/"
+                    to="/myorders"
                   >
                     My Orders
                   </Link>
@@ -73,7 +75,7 @@ const Navbar = () => {
                 >
                   My Cart{" "}
                   <Badge pill bg="danger">
-                    2
+                    {data.length}
                   </Badge>
                 </div>
                 {cartView ? (

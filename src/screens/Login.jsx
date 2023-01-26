@@ -22,12 +22,11 @@ const Login = () => {
       }),
     });
     const data = await response.json();
-    console.log(data);
     if (!data.success) {
       alert("Enter Valid Credentials");
     } else {
       localStorage.setItem("authToken", data.authToken);
-      console.log(localStorage.getItem("authToken"));
+      localStorage.setItem("userEmail", credentials.email);
       navigate("/");
     }
   };

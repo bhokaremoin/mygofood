@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const Order = require("../models/Orders");
 const { body, validationResult } = require("express-validator");
 
 const bcrypt = require("bcryptjs");
@@ -72,5 +73,53 @@ router.post(
     }
   }
 );
+router.post("/foodData", (req, res) => {
+  try {
+    res.send([global.foodItems, global.foodCategory]);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
+router.post("/orderData", async (req, res) => {
+  let data = req.body.order_data;
+  await data.splice(0, 0, { Order_date: req.body.orderDate });
+  let user_id = await Order.findOne({ email: req.body.email });
+  if (user_id) {
+    try {
+      await Order.findOneAndUpdate(
+        { email: req.body.email },
+        {
+          $push: { order_data: data },
+        }
+      ).then(() => {
+        res.json({ success: true });
+      });
+    } catch (error) {
+      console.log(error.message);
+      res.send("Server Error", error.message);
+    }
+  } else {
+    try {
+      await Order.create({
+        email: req.body.email,
+        order_data: [data],
+      }).then(() => {
+        res.json({ success: true });
+      });
+    } catch (error) {
+      console.log(error.message);
+      res.send("Server Error", error.message);
+    }
+  }
+});
+router.post("/getOrderData", async (req, res) => {
+  try {
+    let eId = await Order.findOne({ email: req.body.email });
+    res.json({ orderData: eId });
+  } catch (error) {
+    console.log(error.message);
+    res.send("Error", error.message);
+  }
+});
 module.exports = router;

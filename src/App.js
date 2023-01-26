@@ -8,7 +8,7 @@ import Login from "./screens/Login";
 import Signup from "./screens/Signup";
 import { CartProvider } from "./components/ContextReducer";
 import Cart from "./screens/Cart";
-
+import MyOrders from "./screens/MyOrders";
 function App() {
   return (
     <CartProvider>
@@ -19,6 +19,7 @@ function App() {
             <Route extact path="/login" element={<Login />} />
             <Route extact path="/createuser" element={<Signup />} />
             <Route extact path="/cart" element={<Cart />} />
+            <Route extact path="/myorders" element={<MyOrders />} />
           </Routes>
         </div>
       </BrowserRouter>

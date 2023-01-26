@@ -26,8 +26,8 @@ function Modal({ children, onClose }) {
       <div style={OVERLAY_STYLES} />
       <div style={MODAL_STYLES}>
         <button
-          className="btn bg-danger-fs-4"
-          //   style={{ marginLeft: "90%", marginTop: "-35%" }}
+          className="btn bg-danger fs-4"
+          style={{ marginLeft: "97%", marginTop: "-1%" }}
           onClick={onClose}
         >
           X

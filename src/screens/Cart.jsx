@@ -11,7 +11,23 @@ const Cart = () => {
       </div>
     );
   }
-  const handleCheckOut = async () => {};
+  const handleCheckOut = async () => {
+    let userEmail = localStorage.getItem("userEmail");
+    let response = await fetch("http://localhost:5000/api/orderData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: userEmail,
+        order_data: data,
+        orderDate: new Date().toDateString(),
+      }),
+    });
+    if (response.status === 200) {
+      dispatch({ type: "DROP" });
+    }
+  };
   let totalPrice = data.reduce((total, food) => total + food.price, 0);
   return (
     <div>
@@ -30,7 +46,7 @@ const Cart = () => {
           <tbody>
             {data.map((food, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <th scope="row">{index + 1}</th>
                   <td>{food.name}</td>
                   <td>{food.qty}</td>
@@ -41,7 +57,7 @@ const Cart = () => {
                       type="button"
                       className="btn p-0"
                       onClick={() => {
-                        dispatch({ type: "REMOVE", index: index });
+                        dispatch({ type: "REMOVE", index: index, id: food.id });
                       }}
                     >
                       Delete
@@ -56,10 +72,9 @@ const Cart = () => {
           <h1>Total Price : {totalPrice}/-</h1>
         </div>
         <div>
-          <button
-            className="btn bg-success mt-5"
-            onClick={handleCheckOut}
-          ></button>
+          <button className="btn bg-success mt-5" onClick={handleCheckOut}>
+            Check Out
+          </button>
         </div>
       </div>
     </div>

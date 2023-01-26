@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
@@ -26,9 +27,12 @@ function Signup() {
       }),
     });
     const data = await response.json();
-    console.log(data);
     if (!data.success) {
       alert("Enter Valid Credentials");
+    } else {
+      localStorage.setItem("authToken", data.authToken);
+      localStorage.setItem("userEmail", credentials.email);
+      navigate("/");
     }
   };
   return (

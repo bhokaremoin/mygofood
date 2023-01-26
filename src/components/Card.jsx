@@ -5,11 +5,22 @@ const Card = (props) => {
   let dispatch = useDispatchCart();
   let data = useCart();
   const priceRef = useRef();
-  const { name, img, options } = props;
+  const { _id, name, img, options } = props;
   let priceOptions = Object.keys(options[0]);
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState("");
   const handleAddToCart = async () => {
+    let food = [];
+    for (const item of data) {
+      if (item.id === _id) {
+        food = item;
+        break;
+      }
+    }
+    if (food !== [] && food.size === size) {
+      await dispatch({ type: "UPDATE", id: _id, price: finalPrice, qty: qty });
+      return;
+    }
     await dispatch({
       type: "ADD",
       id: props._id,
